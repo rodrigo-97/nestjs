@@ -6,11 +6,13 @@ import {
   Param,
   Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Controller('authors')
 @ApiTags('Authors')
@@ -40,5 +42,13 @@ export class AuthorsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.authorsService.remove(id);
+  }
+
+  @Put('/update-password/:id')
+  updatePassword(
+    @Param('id') id: string,
+    @Body() updatePasswordDto: UpdatePasswordDto,
+  ) {
+    return this.authorsService.updatePassword(id, updatePasswordDto);
   }
 }

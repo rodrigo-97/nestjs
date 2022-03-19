@@ -6,6 +6,9 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const PORT = process.env.PORT;
   const app = await NestFactory.create(AppModule);
+
+  app.setGlobalPrefix('/api/v1');
+  // Swagger config
   const config = new DocumentBuilder()
     .setTitle('Autores e livros')
     .setDescription(
@@ -15,7 +18,11 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  // Config validation pipe
   app.useGlobalPipes(new ValidationPipe());
+
+  // initialize app
   await app.listen(PORT, () =>
     Logger.log(`server running on ${PORT}`, 'Server'),
   );
